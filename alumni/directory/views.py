@@ -6,6 +6,7 @@ from django.http import HttpResponse
 def index(request):
 	return render(request, 'directory/index.html')
 
+#Patric
 def submit(request):
 	return render(request, 'directory/submit.html')
 
