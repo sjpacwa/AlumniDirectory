@@ -1,1 +1,13 @@
-This is the template for login.
+<a href="{% url 'directory:index' %}">Home</a>
+<p>Login</p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form method="post">
+	{% csrf_token %}
+	username:<br>
+	<input type="text", name="username"><br>
+	password:<br>
+	<input type="password", name="password"><br>
+	<input type="submit" value="Login">
+</form>
