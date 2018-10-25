@@ -4,6 +4,34 @@ from django.db import models
 class Business(models.Model):
 	# Business name and type.
 	business_name = models.CharField(max_length=200)
+	BUSINESS_TYPE_CHOICES = ( #from https://developer.paypal.com/docs/classic/adaptive-accounts/integration-guide/ACBusinessCategories/
+		('1000','Arts, crafts, and collectibles'),
+		('1001','Baby'),
+		('1002','Beauty and fragrances'),
+		('1003','Books and magazines'),
+		('1004','Business to business'),
+		('1005','Clothing, accessories, and shoes'),
+		('1006','Computers, accessories, and services'),
+		('1007','Education'),
+		('1008','Electronics and telecom'),
+		('1009','Entertainment and media'),
+		('1010','Financial services and products'),
+		('1011','Food retail and service'),
+		('1012','Gifts and flowers'),
+		('1013','Government'),
+		('1014','Health and personal care'),
+		('1015','Home and garden'),
+		('1016','Nonprofit'),
+		('1017','Pets and animals'),
+		('1018','Religion and spirituality (for profit)'),
+		('1019','Retail (not elsewhere classified)'),
+		('1020','Services - other'),
+		('1021','Sports and outdoors'),
+		('1022','Toys and hobbies'),
+		('1023','Travel'),
+		('1024','Vehicle sales'),
+		('1025','Vehicle service and accessories.'),
+	)
 	business_type = models.CharField(max_length=200)
 	
 	# Business address.
