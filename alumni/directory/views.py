@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from .models import Business, Alumni
 from django.forms import ModelForm
 # Create your views here.
@@ -22,6 +22,7 @@ def detail(request):
 	return render(request, 'directory/detail.html')
 
 def search(request):
+	found_entries = list(Businesses.objects.filter(business_approved=True))
 	return render(request, 'directory/search.html')
 
 def statistics(request):
