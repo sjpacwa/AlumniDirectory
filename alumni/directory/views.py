@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpRespon
 from .models import Business, Alumni
 from .forms import BusinessForm, AlumniForm
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -30,27 +31,18 @@ def log_in(request):
 		# User is authenticated, redirect to approve.
 		login(request, user)
 		return HttpResponseRedirect('/directory/office/approve/')
-	else:
-		if username is '' and password is '':
-			# No input, don't send errors
-			
+	elif username is not '' or password is not '':
+		# Incorrect login, update error_message.
+		return render(request, 'directory/login.html', {
+			'error_message': "Incorrect username/password."
+			})
 
 	return render(request, 'directory/login.html')
 
+@login_required
 def approve(request):
-	user = authenticate(username='admin', password='default')
-	if user is not None:
-		method_return = render(request, 'directory/approve.html')
-	else:
-		method_return = HttpResponseForbidden("403 - Forbidden")
+	return render(request, 'directory/approve.html')
 
-	return method_return
-
+@login_required
 def statistics(request):
-	user = authenticate(username='fsd', password='default')
-	if user is not None:
-		method_return = render(request, 'directory/statistics.html')
-	else:
-		method_return = HttpResponseForbidden("403 - Forbidden")
-	
-	return method_return
+	return render(request, 'directory/statistics.html')
