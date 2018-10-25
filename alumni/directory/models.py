@@ -92,7 +92,7 @@ class Business(models.Model):
 		('WI','Wisconsin'),
 		('WY','Wyoming'),
 	)
-	business_state = models.CharField(max_length=2, default='CA')
+	business_state = models.CharField(max_length=2, choices = STATE_CHOICES, default='CA')
 	business_zip = models.CharField(max_length=5)
 
 	# Other.
