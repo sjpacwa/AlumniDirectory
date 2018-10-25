@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from .models import Business, Alumni
 from django.forms import ModelForm
+from django.contrib.auth import authenticate
 # Create your views here.
 
 
@@ -24,11 +25,24 @@ def detail(request):
 def search(request):
 	return render(request, 'directory/search.html')
 
-def statistics(request):
-	return render(request, 'directory/statistics.html')
-
 def login(request):
+	
 	return render(request, 'directory/login.html')
 
 def approve(request):
-	return render(request, 'directory/approve.html')
+	user = authenticate(username='admin', password='default')
+	if user is not None:
+		method_return = render(request, 'directory/approve.html')
+	else:
+		method_return = HttpResponseForbidden("403 - Forbidden")
+
+	return method_return
+
+def statistics(request):
+	user = authenticate(username='fsd', password='default')
+	if user is not None:
+		method_return = render(request, 'directory/statistics.html')
+	else:
+		method_return = HttpResponseForbidden("403 - Forbidden")
+	
+	return method_return
