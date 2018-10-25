@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseForbidden, Http404
+from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect
 from .models import Business, Alumni
 from django.forms import ModelForm
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 # Create your views here.
 
 
@@ -26,8 +26,19 @@ def search(request):
 	found_entries = list(Businesses.objects.filter(business_approved=True))
 	return render(request, 'directory/search.html')
 
-def login(request):
-	
+def log_in(request):
+	username = request.POST.get('username', '')
+	password = request.POST.get('password', '')
+	user = authenticate(request, username=username, password=password)
+	if user is not None:
+		# User is authenticated, redirect to approve.
+		login(request, user)
+		return HttpResponseRedirect('/directory/office/approve/')
+	else:
+		if username is '' and password is '':
+			# No input, don't send errors
+			
+
 	return render(request, 'directory/login.html')
 
 def approve(request):

@@ -3,12 +3,13 @@ from django.urls import path
 
 from . import views
 
+app_name = 'directory'
 urlpatterns = [
     path('', views.index, name='index'),
     path('submit/', views.SubmitView, name='submit'),
     path('search/', views.search, name='search'),
     path('<int:business_id>/detail/', views.detail, name='detail'),
-    path('office/login/', views.login, name='login'),
+    path('office/login/', views.log_in, name='login'),
     path('office/statistics/', views.statistics, name='statistics'),
     path('office/approve/', views.approve, name='approve'),
 ]
