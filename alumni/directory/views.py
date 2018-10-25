@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, Http404
 from .models import Business, Alumni
 from django.forms import ModelForm
 from django.contrib.auth import authenticate
@@ -23,6 +23,7 @@ def detail(request):
 	return render(request, 'directory/detail.html')
 
 def search(request):
+	found_entries = list(Businesses.objects.filter(business_approved=True))
 	return render(request, 'directory/search.html')
 
 def login(request):
