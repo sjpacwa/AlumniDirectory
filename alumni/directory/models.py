@@ -32,7 +32,9 @@ class Business(models.Model):
 		('1024','Vehicle sales'),
 		('1025','Vehicle service and accessories.'),
 	)
-	business_type = models.CharField(max_length=200)
+	business_type = models.CharField(max_length=4,
+                                      choices=BUSINESS_TYPE_CHOICES,
+                                      default='1000')
 	
 	# Business address.
 	business_address_one = models.CharField(max_length=200)
