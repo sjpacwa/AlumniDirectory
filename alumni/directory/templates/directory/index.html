@@ -11,9 +11,14 @@ LOL no CSS yet
 	 <img src = "https://upload.wikimedia.org/wikipedia/en/thumb/a/ad/Santa_Clara_U_Seal.svg/1200px-Santa_Clara_U_Seal.svg.png" alt id = "SCU logo" height = 100 width = 100>
 	 <h1>SCU Alumni Business Directory</h1>
 	<div id = "navigation">
-	 <a href="./submit/" target="_blank" rel="nofollow">Post Business</a>
-	 <a href="./office/login/" target="_blank" rel="nofollow">Login</a>
-	 <a href="./search/" target="_blank" rel="nofollow">Search Businesses</a>
+	 <a href="{% url 'directory:submit' %}" rel="nofollow">Post Business</a>
+	 <a href="{% url 'directory:login' %}" rel="nofollow">Login</a>
+	 <a href="{% url 'directory:search' %}" rel="nofollow">Search Businesses</a>
+	 {% if user.is_authenticated %}
+	 <a href="{% url 'directory:approve' %}" rel="nofollow">Approve Businesses</a>
+	 <a href="{% url 'directory:statistics' %}" rel="nofollow">View Statistics</a>
+	 {% endif %}
+
 	<div id = "body">
 </body>
 </html>

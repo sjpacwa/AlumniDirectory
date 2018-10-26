@@ -41,7 +41,10 @@ def log_in(request):
 
 @login_required
 def approve(request):
-	return render(request, 'directory/approve.html')
+	query_set = Business.objects.filter(business_approved=False)
+	print(list(query_set))
+
+	return render(request, 'directory/approve.html', {'query': query_set})
 
 @login_required
 def statistics(request):

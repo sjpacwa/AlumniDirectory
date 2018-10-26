@@ -1,5 +1,63 @@
+<style>
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+</style>
 <a href="{% url 'directory:index' %}">Home</a><br>
 <a href="{% url 'directory:logout' %}">Logout</a><br>
 <a href="{% url 'directory:statistics' %}">Statistics</a><br>
+
+
+{% if query %}
+	<table>
+	{% for item in query %}
+		{% if forloop.first %}
+		<tr>
+			<td colspan="7">Business Info</td>
+			<td colspan="6">Alumni Info</td>
+		<tr> 
+    	<td>Business Name</td>
+    	<td>Business Type</td>
+    	<td>Business Address</td>
+    	<td>Business Description</td>
+    	<td>Business Phone #</td>
+    	<td>Business End Date</td>
+    	<td>Business Website</td>
+    	<td>Alumni Name</td>
+    	<td>Alumni Major</td>
+    	<td>Alumni Grad Year</td>
+    	<td>Alumni School ID</td>
+    	<td>Alumni Personal Email</td>
+    	<td>Alumni School Email</td>
+  	</tr>
+		{% endif %}
+		<tr> 
+    	<td>{{ item.business_name }}</td>
+    	<td>{{ item.business_type }}</td>
+    	<td>{{ item.business_address_one }}<br>
+    		{{ item.business_address_two }}<br>
+    		{{ item.business_city }}, {{ item.business_state }}  {{ item.business_zip }}
+    	</td>
+    	<td>{{ item.business_desc }}</td>
+    	<td>{{ item.business_phone }}</td>
+    	<td>{{ item.business_end_date }}</td>
+    	<td>{{ item.business_website }}</td>
+    	<td>{{ item.business_alumni.alumni_first_name }} {{ item.business_alumni.alumni_last_name }}</td>
+    	<td>{{ item.business_alumni.alumni_major }}</td>
+    	<td>{{ item.business_alumni.alumni_grad }}</td>
+    	<td>{{ item.business_alumni.alumni_school_id }}</td>
+    	<td>{{ item.business_alumni.alumni_personal_email }}</td>
+    	<td>{{ item.business_alumni.alumni_school_email }}</td>
+  	</tr>
+	{% endfor %}
+	</table>
+{% else %}
+	<p>No businesses need approval.<p>
+{% endif %}
+
 <br>
 This is the template for approve.
