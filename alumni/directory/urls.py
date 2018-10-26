@@ -12,5 +12,6 @@ urlpatterns = [
     path('office/login/', views.log_in, name='login'),
     path('office/statistics/', views.statistics, name='statistics'),
     path('office/approve/', views.approve, name='approve'),
+    path('office/logout/', views.log_out, name='logout'),
 ]
 

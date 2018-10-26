@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect
 from .models import Business, Alumni
 from .forms import BusinessForm, AlumniForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -46,3 +46,8 @@ def approve(request):
 @login_required
 def statistics(request):
 	return render(request, 'directory/statistics.html')
+
+@login_required
+def log_out(request):
+	logout(request)
+	return HttpResponseRedirect('/directory/office/login/')
