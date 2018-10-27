@@ -5,6 +5,7 @@ table {
 
 table, th, td {
     border: 1px solid black;
+    padding: 5px;
 }
 </style>
 <a href="{% url 'directory:index' %}">Home</a><br>
@@ -13,48 +14,58 @@ table, th, td {
 
 
 {% if query %}
-	<table>
-	{% for item in query %}
-		{% if forloop.first %}
-		<tr>
-			<td colspan="7">Business Info</td>
-			<td colspan="6">Alumni Info</td>
-		<tr> 
-    	<td>Business Name</td>
-    	<td>Business Type</td>
-    	<td>Business Address</td>
-    	<td>Business Description</td>
-    	<td>Business Phone #</td>
-    	<td>Business End Date</td>
-    	<td>Business Website</td>
-    	<td>Alumni Name</td>
-    	<td>Alumni Major</td>
-    	<td>Alumni Grad Year</td>
-    	<td>Alumni School ID</td>
-    	<td>Alumni Personal Email</td>
-    	<td>Alumni School Email</td>
-  	</tr>
-		{% endif %}
-		<tr> 
-    	<td>{{ item.business_name }}</td>
-    	<td>{{ item.business_type }}</td>
-    	<td>{{ item.business_address_one }}<br>
-    		{{ item.business_address_two }}<br>
-    		{{ item.business_city }}, {{ item.business_state }}  {{ item.business_zip }}
-    	</td>
-    	<td>{{ item.business_desc }}</td>
-    	<td>{{ item.business_phone }}</td>
-    	<td>{{ item.business_end_date }}</td>
-    	<td>{{ item.business_website }}</td>
-    	<td>{{ item.business_alumni.alumni_first_name }} {{ item.business_alumni.alumni_last_name }}</td>
-    	<td>{{ item.business_alumni.alumni_major }}</td>
-    	<td>{{ item.business_alumni.alumni_grad }}</td>
-    	<td>{{ item.business_alumni.alumni_school_id }}</td>
-    	<td>{{ item.business_alumni.alumni_personal_email }}</td>
-    	<td>{{ item.business_alumni.alumni_school_email }}</td>
-  	</tr>
-	{% endfor %}
-	</table>
+	<form action="{% url 'directory:approve_deny' %}" method="post">
+		{% csrf_token %}
+		<table>
+		{% for item in query %}
+			{% if forloop.first %}
+			<tr>
+				<td colspan="7">Business Info</td>
+				<td colspan="6">Alumni Info</td>
+				<td colspan="2">Other</td>
+			</tr>
+			<tr> 
+	    	<td>Business Name</td>
+	    	<td>Business Type</td>
+	    	<td>Business Address</td>
+	    	<td>Business Description</td>
+	    	<td>Business Phone #</td>
+	    	<td>Business End Date</td>
+	    	<td>Business Website</td>
+	    	<td>Alumni Name</td>
+	    	<td>Alumni Major</td>
+	    	<td>Alumni Grad Year</td>
+	    	<td>Alumni School ID</td>
+	    	<td>Alumni Personal Email</td>
+	    	<td>Alumni School Email</td>
+	    	<td>Approve</td>
+	    	<td>Deny</td>
+	  	</tr>
+			{% endif %}
+			<tr> 
+	    	<td>{{ item.business_name }}</td>
+	    	<td>{{ item.business_type }}</td>
+	    	<td>{{ item.business_address_one }}<br>
+	    		{{ item.business_address_two }}<br>
+	    		{{ item.business_city }}, {{ item.business_state }}  {{ item.business_zip }}
+	    	</td>
+	    	<td>{{ item.business_desc }}</td>
+	    	<td>{{ item.business_phone }}</td>
+	    	<td>{{ item.business_end_date }}</td>
+	    	<td>{{ item.business_website }}</td>
+	    	<td>{{ item.business_alumni.alumni_first_name }} {{ item.business_alumni.alumni_last_name }}</td>
+	    	<td>{{ item.business_alumni.alumni_major }}</td>
+	    	<td>{{ item.business_alumni.alumni_grad }}</td>
+	    	<td>{{ item.business_alumni.alumni_school_id }}</td>
+	    	<td>{{ item.business_alumni.alumni_personal_email }}</td>
+	    	<td>{{ item.business_alumni.alumni_school_email }}</td>
+	    	<td><input type="radio" name="{{ item.id }}" value="approve"></td>
+	    	<td><input type="radio" name="{{ item.id }}" value="deny"></td>
+	  	</tr>
+		{% endfor %}
+		</table>
+		<input type="submit" value="Accept Changes">
+	</form>
 {% else %}
 	<p>No businesses need approval.<p>
 {% endif %}

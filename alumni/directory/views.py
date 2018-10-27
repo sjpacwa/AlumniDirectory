@@ -54,3 +54,22 @@ def statistics(request):
 def log_out(request):
 	logout(request)
 	return HttpResponseRedirect('/directory/office/login/')
+
+@login_required
+def approve_deny(request):
+	# Iterate through data other than CRSF token.
+	for choice in list(request.POST.items())[1:]:
+		# Fetch the relevant business and alumni from database.
+		business = Business.objects.get(id=choice[0])
+		alumni = Alumni.objects.get(id=business.business_alumni_id)
+		
+		if choice[1] in ['approve']:
+			business.business_approved = True
+			alumni.alumni_approved = True
+			business.save()
+			alumni.save()
+		else:
+			alumni.delete()
+			business.delete()
+
+	return HttpResponseRedirect('/directory/office/approve/')
