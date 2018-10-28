@@ -41,8 +41,27 @@ def detail(request):
 	return render(request, 'directory/detail.html')
 
 def search(request):
-	found_entries = list(Businesses.objects.filter(business_approved=True))
-	return render(request, 'directory/search.html')
+	results = []
+	if request.method == "POST":
+		form = BusinessSearchForm(request.POST)
+		if form.is_valid():
+			# Save the search and refresh the page
+			#search = form.save(commit=False)
+			#search.date = timezone.now()
+			#search.save()
+			#add entries found
+			results = Businesses.objects.all().filter(businss_name__unaccent__icontains=form.business_name).filter(business_type=form.business_type).filter(business_state=form.business_state)
+			
+			return render(request, 'directory/search.html', {'form': form, 'results':results})
+			#return render()
+		else:
+			return HttpResponseRedirect('/directory/search/')
+
+	else:
+		form = BusinessSearchForm()
+		return render(request, 'directory/search.html', {'form': form, 'results':results})
+	#found_entries = list(Businesses.objects.filter(business_approved=True))
+	#return render(request, 'directory/search.html')
 
 def log_in(request):
 	username = request.POST.get('username', '')
