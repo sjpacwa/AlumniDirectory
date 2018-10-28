@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 # Create your views here.
 
+#Heroku hosting URL: http://frozen-coast-50038.herokuapp.com/directory/
 
 def index(request):
 	return render(request, 'directory/index.html')
