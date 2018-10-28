@@ -42,14 +42,24 @@
 		</div>
 	</div>
 
-	<div id = "container"> <!-- this is a CSS thing for defining page width -->
-	<div id = "header">
-	 <img src = "https://upload.wikimedia.org/wikipedia/en/thumb/a/ad/Santa_Clara_U_Seal.svg/1200px-Santa_Clara_U_Seal.svg.png" alt id = "SCU logo" height = 100 width = 100>
-	 <h1>SCU Alumni Business Directory</h1>
-	 <h2>Search Businesses</h2>
-	<div id = "navigation">
-	 <a href="../" rel="nofollow">Back</a>
-	<div id = "body">
+	<div class=container>
+		<form method="post">
+			{% csrf_token %}
+			<input type="text" name="username" placeholder="search" class="form-control"><br>
+			{{ from.as_p }}
+		</form>
+
+		{% if results %}
+			{% for item in results %}
+				<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+					{{ item.business_name }}<br>
+					<a href="{% url 'directory:detail' item.id %}">Link</a>
+				</div>
+			{% endfor %}
+		{% else %}
+			<h3 style="text-align: center;">No results</h3>
+		{% endif %}
+	</div>
 
 	<!-- Bootstrap scripts -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
