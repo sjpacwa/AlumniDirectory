@@ -45,8 +45,10 @@
 	<div class=container>
 		<form method="post">
 			{% csrf_token %}
-			<input type="text" name="username" placeholder="search" class="form-control"><br>
-			{{ from.as_p }}
+			<!--<input type="text" name="username" placeholder="search" class="form-control"><br>-->
+			{{ form.as_p }}
+			<button type="submit" class="btn">Submit</button>
+
 		</form>
 
 		{% if results %}

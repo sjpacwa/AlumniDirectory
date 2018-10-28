@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect
 from .models import Business, Alumni
-from .forms import BusinessForm, AlumniForm
+from .forms import BusinessForm, AlumniForm, BusinessSearchForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -45,12 +45,13 @@ def search(request):
 	if request.method == "POST":
 		form = BusinessSearchForm(request.POST)
 		if form.is_valid():
+			print(request.POST)
 			# Save the search and refresh the page
 			#search = form.save(commit=False)
 			#search.date = timezone.now()
 			#search.save()
 			#add entries found
-			results = Businesses.objects.all().filter(businss_name__unaccent__icontains=form.business_name).filter(business_type=form.business_type).filter(business_state=form.business_state)
+			results = Business.objects.all().filter(business_name__unaccent__icontains=request.POST.get('business_name')).filter(business_type=request.POST.get('business_type')).filter(business_state=request.POST.get('business_state'))
 			
 			return render(request, 'directory/search.html', {'form': form, 'results':results})
 			#return render()
