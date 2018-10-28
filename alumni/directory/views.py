@@ -58,6 +58,7 @@ def log_out(request):
 @login_required
 def approve_deny(request):
 	# Iterate through data other than CRSF token.
+	print(request.POST)
 	for choice in list(request.POST.items())[1:]:
 		# Fetch the relevant business and alumni from database.
 		business = Business.objects.get(id=choice[0])
@@ -68,7 +69,7 @@ def approve_deny(request):
 			alumni.alumni_approved = True
 			business.save()
 			alumni.save()
-		else:
+		elif choice[1] in ['deny']:
 			alumni.delete()
 			business.delete()
 
