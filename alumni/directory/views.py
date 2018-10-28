@@ -21,10 +21,14 @@ def submit(request):
 			new_alumni = form.save(commit=False)
 			new_alumni.author = request.user
 			new_alumni.published_date = timezone.now()
+			new_alumni.alumni_approved = False
 			new_alumni.save()
 			new_business = form2.save(commit=False)
 			new_business.author = request.user
 			new_business.published_date = timezone.now()
+			new_business.business_num_visit = 0
+			new_business.business_approved = False
+			new_business.business_alumni_id = new_alumni.id
 			new_business.save()
 			return HttpResponseRedirect('/directory/submit/')
 	else:
