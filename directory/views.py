@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect
 from .models import Business, Alumni
-from .forms import BusinessForm, AlumniForm
+from .forms import BusinessForm, AlumniForm, BusinessSearchForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -41,8 +41,28 @@ def detail(request):
 	return render(request, 'directory/detail.html')
 
 def search(request):
-	found_entries = list(Businesses.objects.filter(business_approved=True))
-	return render(request, 'directory/search.html')
+	results = []
+	if request.method == "POST":
+		form = BusinessSearchForm(request.POST)
+		if form.is_valid():
+			print(request.POST)
+			# Save the search and refresh the page
+			#search = form.save(commit=False)
+			#search.date = timezone.now()
+			#search.save()
+			#add entries found
+			results = Business.objects.all().filter(business_name__unaccent__icontains=request.POST.get('business_name')).filter(business_type=request.POST.get('business_type')).filter(business_state=request.POST.get('business_state'))
+			results.sort(key = lambda name: results[0])
+			return render(request, 'directory/search.html', {'form': form, 'results':results})
+			#return render()
+		else:
+			return HttpResponseRedirect('/directory/search/')
+
+	else:
+		form = BusinessSearchForm()
+		return render(request, 'directory/search.html', {'form': form, 'results':results})
+	#found_entries = list(Businesses.objects.filter(business_approved=True))
+	#return render(request, 'directory/search.html')
 
 def log_in(request):
 	username = request.POST.get('username', '')
