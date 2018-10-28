@@ -4,6 +4,7 @@ from .models import Business, Alumni
 from .forms import BusinessForm, AlumniForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 # Create your views here.
 
 
@@ -12,9 +13,25 @@ def index(request):
 
 #Patric
 def submit(request):
-	form = BusinessForm()
-	form2 = AlumniForm()
-	return render(request, 'directory/submit.html', {'form1': form, 'form2': form2})
+	if request.method == "POST":
+		form = AlumniForm(request.POST)
+		form2 = BusinessForm(request.POST)
+		if form.is_valid() and form2.is_valid():
+			# Save both forms and refresh the page
+			new_alumni = form.save(commit=False)
+			new_alumni.author = request.user
+			new_alumni.published_date = timezone.now()
+			new_alumni.save()
+			new_business = form2.save(commit=False)
+			new_business.author = request.user
+			new_business.published_date = timezone.now()
+			new_business.save()
+			return HttpResponseRedirect('/directory/submit/')
+	else:
+		form = AlumniForm()
+		form2 = BusinessForm()
+	return render(request, 'directory/submit.html', {'form': form, 'form2': form2})
+		
 
 def detail(request):
 	return render(request, 'directory/detail.html')
