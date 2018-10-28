@@ -38,7 +38,7 @@ class Business(models.Model):
 	
 	# Business address.
 	business_address_one = models.CharField(max_length=200)
-	business_address_two = models.CharField(max_length=200)
+	business_address_two = models.CharField(max_length=200, blank=True)
 	business_city = models.CharField(max_length=200)
 	STATE_CHOICES = (
 		('AL','Alabama'),
@@ -96,10 +96,10 @@ class Business(models.Model):
 	business_zip = models.CharField(max_length=5)
 
 	# Other.
-	business_desc = models.TextField()
-	business_phone = models.CharField(max_length=10)
-	business_end_date = models.DateField()
-	business_website = models.URLField()
+	business_desc = models.TextField(blank=True)
+	business_phone = models.CharField(max_length=10, blank=True)
+	business_end_date = models.DateField(null=True, blank=True)
+	business_website = models.URLField(blank=True)
 
 	# Internal database stuff.
 	business_num_visit = models.PositiveIntegerField()
@@ -115,11 +115,11 @@ class Alumni(models.Model):
 	# Alumni school info.
 	alumni_major = models.CharField(max_length=30)
 	alumni_grad = models.CharField(max_length=4)
-	alumni_school_id = models.CharField(max_length=15)
+	alumni_school_id = models.CharField(max_length=15, blank=True)
 
 	# Alumni emails.
 	alumni_personal_email = models.EmailField()
-	alumni_school_email = models.EmailField()
+	alumni_school_email = models.EmailField(blank=True)
 
 	# Internal database stuff.
 	alumni_approved = models.BooleanField()

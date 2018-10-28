@@ -17,13 +17,13 @@ class BusinessForm(ModelForm):
 			'business_website'
 		)
 
-		labels = {'business_name':'Business Name',
-			'business_type':'Business Type', 
-			'business_address_one':'Address One', 
+		labels = {'business_name':'Business Name*',
+			'business_type':'Business Type*', 
+			'business_address_one':'Address One*', 
 			'business_address_two':'Address Two', 
-			'business_city':'City', 
-			'business_state':'State',
-			'business_zip':'Zip Code', 
+			'business_city':'City*', 
+			'business_state':'State*',
+			'business_zip':'Zip Code*', 
 			'business_desc':'Description', 
 			'business_phone':'Phone Number', 
 			'business_end_date':'End Date', 
@@ -43,19 +43,19 @@ class AlumniForm(ModelForm):
 			'alumni_school_email'
 		)
 
-		labels = {'alumni_first_name':'First Name', 
-			'alumni_last_name':'Last Name', 
-			'alumni_major':'Major', 
-			'alumni_grad':'Graduation Date',
+		labels = {'alumni_first_name':'First Name*', 
+			'alumni_last_name':'Last Name*', 
+			'alumni_major':'Major*', 
+			'alumni_grad':'Graduation Date*',
 			'alumni_school_id':'SCU ID', 
-			'alumni_personal_email':'Personal Email', 
+			'alumni_personal_email':'Personal Email*', 
 			'alumni_school_email':'SCU Email'
 		}
 
 class BusinessSearchForm(ModelForm):
-    class Meta:
-        model = Business
-        fields = ['business_name', 'business_type', 'business_state']
+	class Meta:
+		model = Business
+		fields = ['business_name', 'business_type', 'business_state']
 	labels = {
 		'business_name':'Business Name',
 		'business_type':'Business Type',
