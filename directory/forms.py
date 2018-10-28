@@ -52,3 +52,12 @@ class AlumniForm(ModelForm):
 			'alumni_school_email':'SCU Email'
 		}
 
+class BusinessSearchForm(ModelForm):
+    class Meta:
+        model = Business
+        fields = ['business_name', 'business_type', 'business_state']
+	labels = {
+		'business_name':'Business Name',
+		'business_type':'Business Type',
+		'business_state':'Business State'
+	}
