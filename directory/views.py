@@ -73,7 +73,7 @@ def search(request):
 			if request.POST.get('business_state') != '00':
 				results = results.filter(business_state=request.POST.get('business_state'))
 
-			list(results).sort(key = lambda name: results[0])
+			#list(results).sort(key = lambda name: results[0])
 
 			return render(request, 'directory/search.html', {'form': form, 'results':results})
 			#return render()
