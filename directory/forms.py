@@ -13,7 +13,6 @@ class BusinessForm(ModelForm):
 			'business_zip', 
 			'business_desc', 
 			'business_phone', 
-			'business_end_date', 
 			'business_website'
 		)
 
@@ -26,7 +25,6 @@ class BusinessForm(ModelForm):
 			'business_zip':'Zip Code*', 
 			'business_desc':'Description', 
 			'business_phone':'Phone Number', 
-			'business_end_date':'End Date', 
 			'business_website':'Website URL'
 		}
 
