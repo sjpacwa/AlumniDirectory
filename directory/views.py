@@ -57,6 +57,8 @@ def search(request):
 			#add entries found
 			results = Business.objects.all().filter(business_name__icontains=request.POST.get('business_name')).filter(business_type=request.POST.get('business_type')).filter(business_state=request.POST.get('business_state')).filter(business_approved=True)
 			
+			results.sort(key = lambda name: results[0])
+
 			return render(request, 'directory/search.html', {'form': form, 'results':results})
 			#return render()
 		else:
