@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect, HttpResponseNotFound
 from .models import Business, Alumni
 from .forms import BusinessForm, AlumniForm, BusinessSearchForm
 from django.contrib.auth import authenticate, login, logout
@@ -37,8 +37,12 @@ def submit(request):
 	return render(request, 'directory/submit.html', {'form': form, 'form2': form2})
 		
 
-def detail(request):
-	return render(request, 'directory/detail.html')
+def detail(request, business_id):
+	business = get_object_or_404(Business, id=business_id)
+	if business.business_approved is False:
+		return HttpResponseNotFound('<h1>Page not found</h1>')
+
+	return render(request, 'directory/detail.html', {'business': business})
 
 def search(request):
 	results = []
@@ -51,7 +55,7 @@ def search(request):
 			#search.date = timezone.now()
 			#search.save()
 			#add entries found
-			results = Business.objects.all().filter(business_name__unaccent__icontains=request.POST.get('business_name')).filter(business_type=request.POST.get('business_type')).filter(business_state=request.POST.get('business_state'))
+			results = Business.objects.all().filter(business_name__icontains=request.POST.get('business_name')).filter(business_type=request.POST.get('business_type')).filter(business_state=request.POST.get('business_state')).filter(business_approved=True)
 			
 			return render(request, 'directory/search.html', {'form': form, 'results':results})
 			#return render()
