@@ -42,8 +42,36 @@
 		</div>
 	</div>
 
-	<!-- Insert HTML here -->
-	This is the template for detail.
+	<div class=container>
+		<h1 style="margin-top: 15px; text-align: center;">Details for {{ business.business_name }}</h1>
+		<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+			<h5><strong>Description:</strong></h5><br>
+			<p>{{ business.business_desc }}</p>
+
+			<table class=table>
+				<tbody>
+					<tr>
+						<th scope="row">Type</th>
+						<td>{{ business.business_type }}</td>
+					</tr>
+					<tr>
+						<th scope="row">Address</th>
+						<td>{{ business.business_address_one }}<br>
+							{{ business.business_address_two }}<br>
+							{{ business.business_city }}, {{ business.business_state }}  {{ business.business_zip }}</td></td>
+					</tr>
+					<tr>
+						<th scope="row">Website</th>
+						<td><a href="{{ business.business_website }}">{{ business.business_website }}</a></td>
+					</tr>
+					<tr>
+						<th scope="row">Phone Number</th>
+						<td>{{ business.business_phone }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 
 	<!-- Bootstrap scripts -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

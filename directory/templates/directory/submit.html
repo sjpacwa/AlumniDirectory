@@ -60,6 +60,8 @@
 							{{ form2.as_p }}
 						</div>
 						<button type="submit" class="save btn btn-default">Submit</button>
+						{% if type_error %}<p style="color: #b50043;text-align: center;"><strong>{{ type_error }}</strong></p>{% endif %}
+						{% if state_error %}<p style="color: #b50043;text-align: center;"><strong>{{ state_error }}</strong></p>{% endif %}
 					</form>
 				{% endblock %}
 			</div>

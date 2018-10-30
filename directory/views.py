@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect, HttpResponseNotFound
 from .models import Business, Alumni
 from .forms import BusinessForm, AlumniForm, BusinessSearchForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from .choice import BUSINESS_TYPE_DICT
 # Create your views here.
 #Heroku hosting URL: http://frozen-coast-50038.herokuapp.com/directory/
 
@@ -22,12 +23,24 @@ def submit(request):
 			new_alumni.author = request.user
 			new_alumni.published_date = timezone.now()
 			new_alumni.alumni_approved = False
-			new_alumni.save()
 			new_business = form2.save(commit=False)
 			new_business.author = request.user
 			new_business.published_date = timezone.now()
 			new_business.business_num_visit = 0
 			new_business.business_approved = False
+
+			type_error = ""
+			state_error = ""
+			if new_business.business_type == '0000':
+				type_error = "You must select a business type."
+			if new_business.business_state == '00':
+				state_error = "You must select a state."
+
+			if type_error != "" or state_error != "":
+				return render(request, 'directory/submit.html', {'form': form, 'form2': form2, 
+					'type_error':type_error, 'state_error': state_error})
+
+			new_alumni.save()
 			new_business.business_alumni_id = new_alumni.id
 			new_business.save()
 			return HttpResponseRedirect('/directory/submit/')
@@ -37,8 +50,14 @@ def submit(request):
 	return render(request, 'directory/submit.html', {'form': form, 'form2': form2})
 		
 
-def detail(request):
-	return render(request, 'directory/detail.html')
+def detail(request, business_id):
+	business = get_object_or_404(Business, id=business_id)
+	if business.business_approved is False:
+		return HttpResponseNotFound('<h1>Page not found</h1>')
+
+	business.business_type = BUSINESS_TYPE_DICT[business.business_type]
+
+	return render(request, 'directory/detail.html', {'business': business})
 
 def search(request):
 	results = []
@@ -46,13 +65,16 @@ def search(request):
 		form = BusinessSearchForm(request.POST)
 		if form.is_valid():
 			print(request.POST)
-			# Save the search and refresh the page
-			#search = form.save(commit=False)
-			#search.date = timezone.now()
-			#search.save()
-			#add entries found
-			results = Business.objects.all().filter(business_name__unaccent__icontains=request.POST.get('business_name')).filter(business_type=request.POST.get('business_type')).filter(business_state=request.POST.get('business_state'))
-			results.sort(key = lambda name: results[0])
+
+			results = Business.objects.all().filter(business_name__icontains=request.POST.get('business_name')).filter(business_approved=True)
+			
+			if request.POST.get('business_type') != '0000':
+				results = results.filter(business_type=request.POST.get('business_type'))
+			if request.POST.get('business_state') != '00':
+				results = results.filter(business_state=request.POST.get('business_state'))
+
+			#list(results).sort(key = lambda name: results[0])
+
 			return render(request, 'directory/search.html', {'form': form, 'results':results})
 			#return render()
 		else:
@@ -83,7 +105,8 @@ def log_in(request):
 @login_required
 def approve(request):
 	query_set = Business.objects.filter(business_approved=False)
-	print(list(query_set))
+	for item in list(query_set):
+		item.business_type = BUSINESS_TYPE_DICT[item.business_type]
 
 	return render(request, 'directory/approve.html', {'query': query_set})
 
