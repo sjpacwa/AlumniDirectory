@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect, HttpResponseNotFound
 from .models import Business, Alumni
 from .forms import BusinessForm, AlumniForm, BusinessSearchForm
-from django.core.mail import send_mail
+from django.core.mail import send_mail, send_mass_mail
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
