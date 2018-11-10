@@ -127,3 +127,11 @@ STATIC_ROOT = ''
 LOGIN_URL = '/directory/office/login/'
 
 django_heroku.settings(locals())
+
+
+# Information for emails
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '465'
+EMAIL_HOST_USER = 'scudirectory@gmail.com'
+EMAIL_HOST_PASSWORD = 'default1!'
+EMAIL_USE_SSL = True

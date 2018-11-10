@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect, HttpResponseNotFound
 from .models import Business, Alumni
 from .forms import BusinessForm, AlumniForm, BusinessSearchForm
+from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -123,6 +124,8 @@ def log_out(request):
 def approve_deny(request):
 	# Iterate through data other than CRSF token.
 	print(request.POST)
+	messages = ()
+
 	for choice in list(request.POST.items())[1:]:
 		# Fetch the relevant business and alumni from database.
 		business = Business.objects.get(id=choice[0])
@@ -133,8 +136,23 @@ def approve_deny(request):
 			alumni.alumni_approved = True
 			business.save()
 			alumni.save()
+			if alumni.alumni_school_email is '':
+				messages = (('[NOREPLY] Your submission has been approved', 'Congratulations, your submission is now viewable in the SCU Alumni Directory.\n' \
+					'This is an unmonitored email address and any responses will be ignored.', 'scudirectory@gmail.com', [alumni.alumni_personal_email,]),)
+			else:
+				messages = (('[NOREPLY] Your submission has been approved', 'Congratulations, your submission is now viewable in the SCU Alumni Directory.\n' \
+					'This is an unmonitored email address and any responses will be ignored.', 'scudirectory@gmail.com', [alumni.alumni_school_email,]),)
 		elif choice[1] in ['deny']:
+			if alumni.alumni_school_email is '':
+				messages = (('[NOREPLY] Your submission has been denied', 'Your submission to the SCU Alumni Directory was denied. Please ensure that all fields are accurate when submitting again.\n' \
+					'This is an unmonitored email address and any responses will be ignored.', 'scudirectory@gmail.com', [alumni.alumni_personal_email,]),)
+			else:
+				messages = (('[NOREPLY] Your submission has been denied', 'Your submission to the SCU Alumni Directory was denied. Please ensure that all fields are accurate when submitting again.\n' \
+					'This is an unmonitored email address and any responses will be ignored.', 'scudirectory@gmail.com', [alumni.alumni_school_email,]),)
+		
 			alumni.delete()
 			business.delete()
+
+	send_mass_mail(messages)
 
 	return HttpResponseRedirect('/directory/office/approve/')
