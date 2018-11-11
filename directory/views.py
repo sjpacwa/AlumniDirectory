@@ -44,7 +44,7 @@ def submit(request):
 			new_alumni.save()
 			new_business.business_alumni_id = new_alumni.id
 			new_business.save()
-			return HttpResponseRedirect('/directory/submit/')
+			return HttpResponseRedirect('/submit/')
 	else:
 		form = AlumniForm()
 		form2 = BusinessForm()
@@ -81,7 +81,7 @@ def search(request):
 			#return render()
 		else:
 			
-			return HttpResponseRedirect('/directory/search/', {'results':results})
+			return HttpResponseRedirect('/search/', {'results':results})
 
 	else:
 		form = BusinessSearchForm()
@@ -96,7 +96,7 @@ def log_in(request):
 	if user is not None:
 		# User is authenticated, redirect to approve.
 		login(request, user)
-		return HttpResponseRedirect('/directory/office/approve/')
+		return HttpResponseRedirect('/office/approve/')
 	elif username is not '' or password is not '':
 		# Incorrect login, update error_message.
 		return render(request, 'directory/login.html', {
@@ -120,7 +120,7 @@ def statistics(request):
 @login_required
 def log_out(request):
 	logout(request)
-	return HttpResponseRedirect('/directory/office/login/')
+	return HttpResponseRedirect('/office/login/')
 
 @login_required
 def approve_deny(request):
@@ -157,4 +157,4 @@ def approve_deny(request):
 
 	send_mass_mail(messages)
 
-	return HttpResponseRedirect('/directory/office/approve/')
+	return HttpResponseRedirect('/office/approve/')
