@@ -7,13 +7,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .choice import BUSINESS_TYPE_DICT
-# Create your views here.
-#Heroku hosting URL: http://frozen-coast-50038.herokuapp.com/directory/
+
+#Heroku hosting URL: http://scu-directory.herokuapp.com
 
 def index(request):
 	return render(request, 'directory/index.html')
 
-#Patric
 def submit(request):
 	if request.method == "POST":
 		form = AlumniForm(request.POST)
@@ -61,13 +60,16 @@ def detail(request, business_id):
 	return render(request, 'directory/detail.html', {'business': business})
 
 def search(request):
+	def dict_fix(results):
+		for item in list(results):
+			item.business_type = BUSINESS_TYPE_DICT[item.business_type]
+		return results
+
 	results = []
 	results = Business.objects.all().filter(business_approved=True)
 	if request.method == "POST":
 		form = BusinessSearchForm(request.POST)
 		if form.is_valid():
-			print(request.POST)
-
 			results = Business.objects.all().filter(business_name__icontains=request.POST.get('business_name')).filter(business_approved=True)
 			
 			if request.POST.get('business_type') != '0000':
@@ -75,19 +77,16 @@ def search(request):
 			if request.POST.get('business_state') != '00':
 				results = results.filter(business_state=request.POST.get('business_state'))
 
-			#list(results).sort(key = lambda name: results[0])
-
+			results = dict_fix(results)
 			return render(request, 'directory/search.html', {'form': form, 'results':results})
-			#return render()
 		else:
-			
+			results = dict_fix(results)
 			return HttpResponseRedirect('/search/', {'results':results})
 
 	else:
 		form = BusinessSearchForm()
+		results = dict_fix(results)
 		return render(request, 'directory/search.html', {'form': form, 'results':results})
-	#found_entries = list(Businesses.objects.filter(business_approved=True))
-	#return render(request, 'directory/search.html')
 
 def log_in(request):
 	username = request.POST.get('username', '')
@@ -125,7 +124,6 @@ def log_out(request):
 @login_required
 def approve_deny(request):
 	# Iterate through data other than CRSF token.
-	print(request.POST)
 	messages = ()
 
 	for choice in list(request.POST.items())[1:]:
@@ -161,3 +159,15 @@ def approve_deny(request):
 
 def edit(request, business_id):
 	return render(request, 'directory/edit.html')
+
+def delete(request, business_id):
+	if request.POST.get('csrfmiddlewaretoken') is None:
+		# Was not accessed through the right form.
+		return HttpResponseNotFound('<h1>Page not found</h1>')
+
+	else:
+		business = Business.objects.get(id=business_id)
+		alumni = Alumni.objects.get(id=business.business_alumni_id)
+		alumni.delete()
+		business.delete()
+		return HttpResponseRedirect('/search/')
