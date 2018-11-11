@@ -62,6 +62,7 @@ def detail(request, business_id):
 
 def search(request):
 	results = []
+	results = Business.objects.all().filter(business_approved=True)
 	if request.method == "POST":
 		form = BusinessSearchForm(request.POST)
 		if form.is_valid():
@@ -79,7 +80,8 @@ def search(request):
 			return render(request, 'directory/search.html', {'form': form, 'results':results})
 			#return render()
 		else:
-			return HttpResponseRedirect('/directory/search/')
+			
+			return HttpResponseRedirect('/directory/search/', {'results':results})
 
 	else:
 		form = BusinessSearchForm()

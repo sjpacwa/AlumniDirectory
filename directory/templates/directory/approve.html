@@ -100,7 +100,7 @@
 
 						<div class="btn-group btn-group-toggle" data-toggle="buttons">
 							<label class="btn btn-outline-success">
-								<input type="radio" name="{{ item.id }}" value="approve"> Accept
+								<input type="radio" name="{{ item.id }}" value="approve"> Approve
 							</label>
 							<label class="btn btn-outline-danger">
 								<input type="radio" name="{{ item.id }}" value="deny"> Deny
@@ -108,7 +108,7 @@
 						</div>
 					</div>
 				{% endfor %}
-				<button type="submit" class="btn">Accept</button>
+				<button type="submit" class="btn">Accept Changes</button>
 			</form>
 		{% else %}
 			<h3 style="text-align: center">You are set! Nothing to approve.</h3>

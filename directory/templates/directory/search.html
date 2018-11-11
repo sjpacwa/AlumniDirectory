@@ -55,8 +55,8 @@
 		{% if results %}
 			{% for item in results %}
 				<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
-					{{ item.business_name }}<br>
-					<a href="{% url 'directory:detail' item.id %}">Link</a>
+					<a href="{% url 'directory:detail' item.id %}" target=_blank><h4><strong>{{ item.business_name }}</strong></h4></a>
+					<p> {{ item.business_city }}, {{ item.business_state }}
 				</div>
 			{% endfor %}
 		{% else %}
