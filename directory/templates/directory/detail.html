@@ -70,9 +70,12 @@
 					</tr>
 				</tbody>
 			</table>
-			<small>Are you the business owner? <a href="{% url 'directory:index' %}">Make edits or delete here!</a></small>
+			<small>Are you the business owner? <a href="{% url 'directory:edit' business.id %}">Make edits or delete here!</a></small>
 		</div>
-		<button type="submit" class="btn">Search for Another Business</button>
+		<form action="{% url 'directory:search' %}">
+			{% csrf_token %}
+			<button type="submit" class="btn">Search for Another Business</button>
+		</form>
 	</div>
 
 	<!-- Bootstrap scripts -->

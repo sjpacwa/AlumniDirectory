@@ -158,3 +158,6 @@ def approve_deny(request):
 	send_mass_mail(messages)
 
 	return HttpResponseRedirect('/office/approve/')
+
+def edit(request, business_id):
+	return render(request, 'directory/edit.html')
