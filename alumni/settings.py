@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'directory.apps.DirectoryConfig',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,6 @@ EMAIL_PORT = '465'
 EMAIL_HOST_USER = 'scudirectory@gmail.com'
 EMAIL_HOST_PASSWORD = 'default1!'
 EMAIL_USE_SSL = True
+
+# Information for crispy forms
+CRISPY_TEMPLATE_PACK = 'bootstrap'

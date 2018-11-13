@@ -53,11 +53,11 @@
 						{% csrf_token %}
 						<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
 							<h3 style="text-align: center;">Alumni Information</h3>
-							{{ form.as_p }}
+							{{ form }}
 						</div>
 						<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
 							<h3 style="text-align: center;">Business Information</h3>
-							{{ form2.as_p }}
+							{{ form2 }}
 						</div>
 						<button type="submit" class="save btn btn-default">Submit</button>
 						{% if type_error %}<p style="color: #b50043;text-align: center;"><strong>{{ type_error }}</strong></p>{% endif %}

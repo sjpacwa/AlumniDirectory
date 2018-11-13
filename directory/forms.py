@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from crispy_forms.helper import FormHelper
 from .models import Business, Alumni
 
 class BusinessForm(ModelForm):
@@ -28,6 +29,10 @@ class BusinessForm(ModelForm):
 			'business_website':'Website URL'
 		}
 
+	def __init__(self, *args, **kwargs):
+		super(BusinessForm, self).__init__(*args, **kwargs)
+		self.helper = FormHelper()
+
 
 class AlumniForm(ModelForm):
 	class Meta:
@@ -49,6 +54,10 @@ class AlumniForm(ModelForm):
 			'alumni_personal_email':'Personal Email*', 
 			'alumni_school_email':'SCU Email'
 		}
+
+	def __init__(self, *args, **kwargs):
+			super(AlumniForm, self).__init__(*args, **kwargs)
+			self.helper = FormHelper()
 
 class BusinessSearchForm(ModelForm):
 	class Meta:
