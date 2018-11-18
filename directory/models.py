@@ -24,6 +24,8 @@ class Business(models.Model):
 	business_website = models.URLField(blank=True)
 
 	# Internal database stuff.
+	timestamp = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 	business_num_visit = models.PositiveIntegerField()
 	business_approved = models.BooleanField()
 	business_alumni = models.ForeignKey('Alumni', on_delete=models.CASCADE)

@@ -54,7 +54,9 @@ def detail(request, business_id):
 	business = get_object_or_404(Business, id=business_id)
 	if business.business_approved is False:
 		return HttpResponseNotFound('<h1>Page not found</h1>')
-
+	
+	business.business_num_visit = business.business_num_visit + 1
+	
 	business.business_type = BUSINESS_TYPE_DICT[business.business_type]
 
 	return render(request, 'directory/detail.html', {'business': business})
