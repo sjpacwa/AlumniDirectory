@@ -127,7 +127,7 @@ STATIC_ROOT = ''
 
 LOGIN_URL = '/directory/office/login/'
 
-django_heroku.settings(locals())
+django_heroku.settings(locals(), databases=False)
 
 
 # Information for emails
