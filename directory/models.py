@@ -19,7 +19,7 @@ class Business(models.Model):
 
 	# Other.
 	business_desc = models.TextField(blank=True)
-	business_phone = models.CharField(blank=True)
+	business_phone = models.CharField(blank=True, max_length=10)
 	business_website = models.URLField(blank=True)
 
 	# Internal database stuff.
@@ -45,7 +45,7 @@ class Business(models.Model):
 
 	# Other.
 	business_edit_desc = models.TextField(blank=True, default=business_desc)
-	business_edit_phone = models.CharField(blank=True)
+	business_edit_phone = models.CharField(blank=True, max_length=10)
 	business_edit_website = models.URLField(blank=True, default=business_website)
 
 	# Internal database stuff.
