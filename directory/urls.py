@@ -14,7 +14,9 @@ urlpatterns = [
     path('office/statistics/', views.statistics, name='statistics'),
     path('office/approve/', views.approve, name='approve'),
     path('office/logout/', views.log_out, name='logout'),
-    path('office/approve_deny/', views.approve_deny, name='approve_deny'),
+    path('office/approve_deny_new/', views.approve_deny_new, name='approve_deny_new'),
+    path('office/approve_deny_edit/', views.approve_deny_edit, name='approve_deny_edit'),
+    path('<int:business_id>/admin_delete/', views.admin_delete, name='admin_delete'),
     path('<int:business_id>/delete/', views.delete, name='delete')
-]
+]   
 

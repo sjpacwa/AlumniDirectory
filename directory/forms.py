@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, CharField
 from crispy_forms.helper import FormHelper
 from .models import Business, Alumni
 
@@ -59,6 +59,7 @@ class AlumniForm(ModelForm):
 			super(AlumniForm, self).__init__(*args, **kwargs)
 			self.helper = FormHelper()
 
+
 class BusinessSearchForm(ModelForm):
 	class Meta:
 		model = Business
@@ -68,3 +69,37 @@ class BusinessSearchForm(ModelForm):
 		'business_type':'Business Type',
 		'business_state':'Business State'
 	}
+
+
+class BusinessEditForm(ModelForm):
+	code_check = CharField(label='Verification Code*')
+
+	class Meta:
+		model = Business
+		fields = ('business_edit_name',
+			'business_edit_type',
+			'business_edit_address_one',
+			'business_edit_address_two',
+			'business_edit_city',
+			'business_edit_state',
+			'business_edit_zip',
+			'business_edit_desc',
+			'business_edit_phone',
+			'business_edit_website'
+		)
+
+		labels = {'business_edit_name':'Business Name*',
+			'business_edit_type':'Business Type*',
+			'business_edit_address_one':'Address One*',
+			'business_edit_address_two':'Address Two',
+			'business_edit_city':'City*',
+			'business_edit_state':'State*',
+			'business_edit_zip':'Zip Code*',
+			'business_edit_desc':'Description',
+			'business_edit_phone':'Phone Number',
+			'business_edit_website':'Website URL'
+		}
+
+	def __init__(self, *args, **kwargs):
+		super(BusinessEditForm, self).__init__(*args, **kwargs)
+		self.helper = FormHelper()

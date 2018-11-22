@@ -20,12 +20,11 @@ class Business(models.Model):
 	# Other.
 	business_desc = models.TextField(blank=True)
 	business_phone = models.CharField(blank=True, max_length=10)
-	business_submit_date = models.DateField(default=date.today)
 	business_website = models.URLField(blank=True)
 
 	# Internal database stuff.
-	timestamp = models.DateTimeField(auto_now_add=True)
-	updated_at = models.DateTimeField(auto_now=True)
+	business_timestamp = models.DateTimeField(auto_now_add=True)
+	business_updated_at = models.DateTimeField(auto_now=True)
 	business_num_visit = models.PositiveIntegerField()
 	business_approved = models.BooleanField()
 	business_alumni = models.ForeignKey('Alumni', on_delete=models.CASCADE)
@@ -39,7 +38,7 @@ class Business(models.Model):
 
 	# Business address.
 	business_edit_address_one = models.CharField(max_length=200, default=business_address_one)
-	business_edit_address_two = models.CharField(max_length=200, default=business_address_two)
+	business_edit_address_two = models.CharField(max_length=200, default=business_address_two, blank=True)
 	business_edit_city = models.CharField(max_length=200, default=business_city)
 	business_edit_state = models.CharField(max_length=2, choices=STATE_CHOICES, default=business_state)
 	business_edit_zip = models.CharField(max_length=5, default = business_zip)
@@ -47,7 +46,6 @@ class Business(models.Model):
 	# Other.
 	business_edit_desc = models.TextField(blank=True, default=business_desc)
 	business_edit_phone = models.CharField(blank=True, max_length=10, default=business_phone)
-	business_edit_date = models.DateField(default=date.today)
 	business_edit_website = models.URLField(blank=True, default=business_website)
 
 	# Internal database stuff.

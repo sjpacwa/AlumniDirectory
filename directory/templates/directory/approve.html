@@ -43,11 +43,11 @@
 	</div>
 
 	<div class=container>
-		<h1 style="margin-top: 15px; text-align: center;">Business and Alumni Approvals</h1>
-		{% if query %}
-			<form action="{% url 'directory:approve_deny' %}" method="post">
+		<h1 style="margin-top: 15px; text-align: center;">New Business Approvals</h1>
+		{% if new %}
+			<form action="{% url 'directory:approve_deny_new' %}" method="post">
 				{% csrf_token %}
-				{% for item in query %}
+				{% for item in new %}
 					{% if forloop.counter|divisibleby:2 %}
 						<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px; background-color: #F0F0F0;">
 					{% else %}
@@ -69,7 +69,9 @@
 									<td>{{ item.business_name }}</td>
 									<td>{{ item.business_type }}</td>
 									<td>{{ item.business_address_one }}<br>
-										{{ item.business_address_two }}<br>
+										{% if item.business_address_two %}
+											{{ item.business_address_two }}<br>
+										{% endif %}
 										{{ item.business_city }}, {{ item.business_state }}  {{ item.business_zip }}</td>
 									<td>{{ item.business_desc }}</td>
 									<td>{{ item.business_website }}</td>
@@ -111,7 +113,95 @@
 				<button type="submit" class="btn">Accept Changes</button>
 			</form>
 		{% else %}
-			<h3 style="text-align: center">You are set! Nothing to approve.</h3>
+			<h4 style="text-align: center">No new businesses to approve.</h4>
+		{% endif %}
+
+		<hr style="margin-top: 30px; margin-bottom: 30px">
+
+		<h1 style="margin-top: 15px; text-align: center;">Edit Approvals</h1>
+		{% if edit %}
+			<form action="{% url 'directory:approve_deny_edit' %}" method="post">
+				{% csrf_token %}
+				{% for item in edit %}
+					{% if forloop.counter|divisibleby:2 %}
+						<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px; background-color: #F0F0F0;">
+					{% else %}
+						<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+					{% endif %}
+						<table class=table>
+							<thead>
+								<th scope="col">Business:</th>
+								<th scope="col">Name</th>
+								<th scope="col">Type</th>
+								<th scope="col">Address</th>
+								<th scope="col">Description</th>
+								<th scope="col">Website</th>
+								<th scope="col">Phone Number</th>
+							</thead>
+							<tbody>
+								<tr>
+									<th>Old</th>
+									<td>{{ item.business_name }}</td>
+									<td>{{ item.business_type }}</td>
+									<td>{{ item.business_address_one }}<br>
+										{% if item.business_address_two %}
+											{{ item.business_address_two }}<br>
+										{% endif %}
+										{{ item.business_city }}, {{ item.business_state }}  {{ item.business_zip }}</td>
+									<td>{{ item.business_desc }}</td>
+									<td>{{ item.business_website }}</td>
+									<td>{{ item.business_phone }}</td>
+							    </tr>
+							    <tr>
+									<th>New</th>
+									<td>{{ item.business_edit_name }}</td>
+									<td>{{ item.business_edit_type }}</td>
+									<td>{{ item.business_edit_address_one }}<br>
+										{% if item.business_edit_address_two %}
+											{{ item.business_edit_address_two }}<br>
+										{% endif %}
+										{{ item.business_edit_city }}, {{ item.business_edit_state }}  {{ item.business_edit_zip }}</td>
+									<td>{{ item.business_edit_desc }}</td>
+									<td>{{ item.business_edit_website }}</td>
+									<td>{{ item.business_edit_phone }}</td>
+							    </tr>
+							</tbody>
+							<thead>
+								<th scope="col">Alumni:</th>
+								<th scope="col">Name</th>
+								<th scope="col">Major</th>
+								<th scope="col">Grad Year</th>
+								<th scope="col">School ID</th>
+								<th scope="col">Personal Email</th>
+								<th scope="col">Alumni Email</th>
+							</thead>
+							<tbody>
+								<tr>
+									<th></th>
+									<td>{{ item.business_alumni.alumni_first_name }} {{ item.business_alumni.alumni_last_name }}</td>
+									<td>{{ item.business_alumni.alumni_major }}</td>
+									<td>{{ item.business_alumni.alumni_grad }}</td>
+									<td>{{ item.business_alumni.alumni_school_id }}</td>
+									<td>{{ item.business_alumni.alumni_personal_email }}</td>
+									<td>{{ item.business_alumni.alumni_school_email }}</td>
+							    </tr>
+							</tbody>
+						</table>
+
+						<div class="btn-group btn-group-toggle" data-toggle="buttons">
+							<label class="btn btn-outline-success">
+								<input type="radio" name="{{ item.id }}" value="approve"> Approve
+							</label>
+							<label class="btn btn-outline-danger">
+								<input type="radio" name="{{ item.id }}" value="deny"> Deny
+							</label>
+						</div>
+					</div>
+				{% endfor %}
+				<button type="submit" class="btn">Accept Changes</button>
+			</form>
+		{% else %}
+			<h4 style="text-align: center">No edits to approve.</h4>
 		{% endif %}
 	</div>
 

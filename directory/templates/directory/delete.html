@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>Edit Business</title>
+	<title>Delete Business</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
@@ -43,8 +43,8 @@
 	</div>
 
 	<div class=container>
-		{% if submitted %}
-			<h1 style="margin-top: 15px; text-align: center;">Edit Successful</h1>
+		{% if deleted %}
+			<h1 style="margin-top: 15px; text-align: center;">{{ business.business_name }} Successfully Deleted</h1>
 
 		{% else %}
 			<h1 style="margin-top: 15px; text-align: center;">Edit {{ business.business_name }}</h1>
@@ -52,16 +52,13 @@
 				<div class="col-sm">
 				</div>
 				<div class="col-sm">
-					{% block content %}
-						<form method="POST" class="post-form">
-							{% csrf_token %}
-							<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
-								{{ form }}
-							</div>
-							<button type="submit" class="save btn btn-default">Submit</button>
-							{% if error_message %}<p style="color: #b50043;text-align: center;"><strong>{{ error_message }}</strong></p>{% endif %}
-						</form>
-					{% endblock %}
+					<form method="POST" class="post-form">
+						{% csrf_token %}
+						<input type="text", name="code_check" placeholder="Verification Code" class="form-control">
+						<br>
+						<button type="submit" class="btn">Submit</button>
+						{% if error %}<p style="color: #b50043;text-align: center;"><strong>{{ error }}</strong></p>{% endif %}
+					</form>
 				</div>
 				<div class="col-sm">
 				</div>

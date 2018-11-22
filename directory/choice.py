@@ -85,3 +85,4 @@ STATE_CHOICES = (
 	)
 
 STATE_DICT = {entry[0]:entry[1] for entry in STATE_CHOICES}
+
