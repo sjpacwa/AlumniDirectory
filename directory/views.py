@@ -303,6 +303,11 @@ def admin_delete(request, business_id):
 	else:
 		business = Business.objects.get(id=business_id)
 		alumni = Alumni.objects.get(id=business.business_alumni_id)
+		email = ("[noreply] Your business has been deleted.",
+			"An Alumni Office admin has removed your business from the directory. It will no longer be visible in listings.\nThis is an unmonitored email address and any responses will be ignored.",
+			"scudirectory@gmail.com",
+			[alumni.alumni_personal_email])
+		send_mass_mail((email,))
 		alumni.delete()
 		business.delete()
 		return HttpResponseRedirect('/search/')
@@ -316,6 +321,11 @@ def delete(request, business_id):
 		# We need to check the code and then delete business or ask again.
 		if request.POST.get('code_check') == business.business_edit_code:
 			# The correct code was supplied. Delete the business and send an email.
+			email = ("[noreply] Your business has been deleted.",
+			"Your business has been removed from the directory. It will no longer be visible in listings.\nThis is an unmonitored email address and any responses will be ignored.",
+			"scudirectory@gmail.com",
+			[alumni.alumni_personal_email])
+			send_mass_mail((email,))
 			alumni.delete()
 			business.delete()
 
