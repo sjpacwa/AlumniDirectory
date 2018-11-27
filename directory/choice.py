@@ -1,3 +1,6 @@
+# choice.py
+# Stores the information for dropdown menus as well as dictionaries to assist with database queries.
+
 BUSINESS_TYPE_CHOICES = ( #from https://developer.paypal.com/docs/classic/adaptive-accounts/integration-guide/ACBusinessCategories/
 		('0000','---'),
 		('1000','Arts, crafts, and collectibles'),

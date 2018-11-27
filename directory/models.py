@@ -1,3 +1,6 @@
+# models.py
+# Contains representations of all of the database models in Django.
+
 from django.db import models
 from datetime import date
 from .choice import BUSINESS_TYPE_CHOICES, STATE_CHOICES

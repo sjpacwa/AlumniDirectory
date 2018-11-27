@@ -62,15 +62,19 @@
 			<table class=table>
 				<thead>
 					<tr>
-						<th scope="col"><h3><strong>Business Name</strong></h3></th>
-						<th scope="col"><h3><strong>Number of Visits</strong></h3></th>
+						<th scope="col"><h3>Business Name</h3></th>
+						<th scope="col"><h3>Number of Visits</h3></th>
+						<th scope="col"><h3>Owner Name</h3></th>
+						<th scope="col"><h3>Owner Email</h3></th>
 					</tr>
 				</thead>
 				<tbody>
 				{% for business in businesses %}			
 					<tr>
-						<td><h3>{{ business.0 }}</h3></td>
-						<td><h3>{{ business.1 }}</h3></td>
+						<td><h4>{{ business.0 }}</h4></td>
+						<td><h4>{{ business.1 }}</h4></td>
+						<td><h4>{{ business.2 }} {{ business.3 }}</h4></td>
+						<td><h4>{{ business.4 }}</h4></td>
 					</tr>			
 				{% endfor %}
 				</tbody>

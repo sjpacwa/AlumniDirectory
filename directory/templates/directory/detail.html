@@ -65,11 +65,22 @@
 					<tr>
 						<th scope="row">Website</th>
 						<td><a href="{{ business.business_website }}">{{ business.business_website }}</a></td>
+
 					</tr>
 					<tr>
 						<th scope="row">Phone Number</th>
 						<td>{{ business.business_phone }}</td>
 					</tr>
+					{% if user.is_authenticated %}
+						<tr>
+							<th scope="row">Owner Name</th>
+							<td>{{ alumni.alumni_first_name }} {{ alumni.alumni_last_name }}</td>
+						</tr>
+						<tr>
+							<th scope="row">Owner Email</th>
+							<td>{{ alumni.alumni_personal_email }}</td>
+						</tr>
+					{% endif %}
 				</tbody>
 			</table>
 			{% if user.is_authenticated %}

@@ -1,3 +1,6 @@
+# forms.py
+# Contains classes that represent the different forms used on the website so they can be interpreted by Django.
+
 from django.forms import ModelForm, CharField
 from crispy_forms.helper import FormHelper
 from .models import Business, Alumni
@@ -30,6 +33,8 @@ class BusinessForm(ModelForm):
 		}
 
 	def __init__(self, *args, **kwargs):
+		# __init__
+		# Utilizes Django crispy forms to help them display nicely.
 		super(BusinessForm, self).__init__(*args, **kwargs)
 		self.helper = FormHelper()
 
@@ -56,19 +61,9 @@ class AlumniForm(ModelForm):
 		}
 
 	def __init__(self, *args, **kwargs):
+			# Utilizes Django crispy forms to help them display nicely.
 			super(AlumniForm, self).__init__(*args, **kwargs)
 			self.helper = FormHelper()
-
-
-class BusinessSearchForm(ModelForm):
-	class Meta:
-		model = Business
-		fields = ['business_name', 'business_type', 'business_state']
-	labels = {
-		'business_name':'Business Name',
-		'business_type':'Business Type',
-		'business_state':'Business State'
-	}
 
 
 class BusinessEditForm(ModelForm):
@@ -101,5 +96,6 @@ class BusinessEditForm(ModelForm):
 		}
 
 	def __init__(self, *args, **kwargs):
+		# Utilizes Django crispy forms to help them display nicely.
 		super(BusinessEditForm, self).__init__(*args, **kwargs)
 		self.helper = FormHelper()
