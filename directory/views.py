@@ -152,7 +152,6 @@ def search(request):
 			'state':STATE_CHOICES})
 
 	else:
-		form = BusinessSearchForm()
 		results = dict_fix(results)
 		return render(request, 'directory/search.html', {'results':results, 'types':list(BUSINESS_TYPE_CHOICES), 'state':STATE_CHOICES})
 
