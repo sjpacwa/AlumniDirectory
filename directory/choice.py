@@ -1,10 +1,5 @@
-from django.db import models
-
-
-class Business(models.Model):
-	# Business name and type.
-	business_name = models.CharField(max_length=200)
-	BUSINESS_TYPE_CHOICES = ( #from https://developer.paypal.com/docs/classic/adaptive-accounts/integration-guide/ACBusinessCategories/
+BUSINESS_TYPE_CHOICES = ( #from https://developer.paypal.com/docs/classic/adaptive-accounts/integration-guide/ACBusinessCategories/
+		('0000','---'),
 		('1000','Arts, crafts, and collectibles'),
 		('1001','Baby'),
 		('1002','Beauty and fragrances'),
@@ -32,15 +27,12 @@ class Business(models.Model):
 		('1024','Vehicle sales'),
 		('1025','Vehicle service and accessories.'),
 	)
-	business_type = models.CharField(max_length=4,
-                                      choices=BUSINESS_TYPE_CHOICES,
-                                      default='1000')
-	
-	# Business address.
-	business_address_one = models.CharField(max_length=200)
-	business_address_two = models.CharField(max_length=200)
-	business_city = models.CharField(max_length=200)
-	STATE_CHOICES = (
+
+BUSINESS_TYPE_DICT = {entry[0]:entry[1] for entry in BUSINESS_TYPE_CHOICES}
+REVERSE_BUSINESS_TYPE_DICT = {entry[1]:entry[0] for entry in BUSINESS_TYPE_CHOICES}
+
+STATE_CHOICES = (
+		('00','---'),
 		('AL','Alabama'),
 		('AK','Alaska'),
 		('AZ','Arizona'),
@@ -92,34 +84,6 @@ class Business(models.Model):
 		('WI','Wisconsin'),
 		('WY','Wyoming'),
 	)
-	business_state = models.CharField(max_length=2, choices = STATE_CHOICES, default='CA')
-	business_zip = models.CharField(max_length=5)
 
-	# Other.
-	business_desc = models.TextField()
-	business_phone = models.CharField(max_length=10)
-	business_end_date = models.DateField()
-	business_website = models.URLField()
-
-	# Internal database stuff.
-	business_num_visit = models.PositiveIntegerField()
-	business_approved = models.BooleanField()
-	business_alumni = models.ForeignKey('Alumni', on_delete=models.CASCADE)
-
-
-class Alumni(models.Model):
-	# Alumni name.
-	alumni_first_name = models.CharField(max_length=200)
-	alumni_last_name = models.CharField(max_length=200)
-	
-	# Alumni school info.
-	alumni_major = models.CharField(max_length=30)
-	alumni_grad = models.CharField(max_length=4)
-	alumni_school_id = models.CharField(max_length=15)
-
-	# Alumni emails.
-	alumni_personal_email = models.EmailField()
-	alumni_school_email = models.EmailField()
-
-	# Internal database stuff.
-	alumni_approved = models.BooleanField()
+STATE_DICT = {entry[0]:entry[1] for entry in STATE_CHOICES}
+REVERSE_STATE_DICT = {entry[1]:entry[0] for entry in STATE_CHOICES}
