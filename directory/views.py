@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
-from .choice import BUSINESS_TYPE_DICT
+from .choice import BUSINESS_TYPE_DICT, BUSINESS_TYPE_CHOICES, STATE_CHOICES, REVERSE_BUSINESS_TYPE_DICT, REVERSE_STATE_DICT
 from random import random
 
 #Heroku hosting URL: http://scu-directory.herokuapp.com
@@ -77,28 +77,33 @@ def search(request):
 			item.business_type = BUSINESS_TYPE_DICT[item.business_type]
 		return results
 
-	results = []
+	# Get all business that have been apprived.
 	results = Business.objects.all().filter(business_approved=True)
 	if request.method == "POST":
-		form = BusinessSearchForm(request.POST)
-		if form.is_valid():
-			results = Business.objects.all().filter(business_name__icontains=request.POST.get('business_name')).filter(business_approved=True)
-			
-			if request.POST.get('business_type') != '0000':
-				results = results.filter(business_type=request.POST.get('business_type'))
-			if request.POST.get('business_state') != '00':
-				results = results.filter(business_state=request.POST.get('business_state'))
+		# Filter by business name if supplied.
+		if request.POST.get('business_name') != '':
+			results = results.filter(business_name__icontains=request.POST.get('business_name'))
+		
+		# Filter by business type if supplied.
+		if request.POST.get('type') != '---':
+			results = results.filter(business_type=REVERSE_BUSINESS_TYPE_DICT[request.POST.get('type')])
 
-			results = dict_fix(results)
-			return render(request, 'directory/search.html', {'form': form, 'results':results})
-		else:
-			results = dict_fix(results)
-			return HttpResponseRedirect('/search/', {'results':results})
+		# Filter by business state if supplied.
+		if request.POST.get('state') != '---':
+			results = results.filter(business_state=REVERSE_STATE_DICT[request.POST.get('state')])
+
+		results = dict_fix(results)
+		return render(request, 'directory/search.html', {'filled_name':request.POST.get('business_name'),
+			'chosen_type':request.POST.get('type'),
+			'chosen_state':request.POST.get('state'),
+			'results':results, 
+			'types':BUSINESS_TYPE_CHOICES, 
+			'state':STATE_CHOICES})
 
 	else:
 		form = BusinessSearchForm()
 		results = dict_fix(results)
-		return render(request, 'directory/search.html', {'form': form, 'results':results})
+		return render(request, 'directory/search.html', {'results':results, 'types':list(BUSINESS_TYPE_CHOICES), 'state':STATE_CHOICES})
 
 def log_in(request):
 	username = request.POST.get('username', '')

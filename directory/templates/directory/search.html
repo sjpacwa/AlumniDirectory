@@ -46,10 +46,38 @@
 		<h1 style="margin-top: 15px; text-align: center;">Search</h1>
 		<form method="post">
 			{% csrf_token %}
-			<!--<input type="text" name="username" placeholder="search" class="form-control"><br>-->
-			{{ form.as_p }}
-			<button type="submit" class="btn">Submit</button>
+			<div class="form-group">
+				<label for="business_name">Business Name</label>
+				<input type="text", name="business_name" placeholder="Search..." class="form-control" value='{{ filled_name }}'>
+			</div>
 
+			<div class="form-group">
+				<label for="type">Business Type</label>
+				<select class="form-control" id="type", name="type">
+					{% for type_choice in types %}
+						{% if type_choice.1 == chosen_type %}
+							<option selected>{{ type_choice.1 }}</option>
+						{% else %}
+							<option>{{ type_choice.1 }}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="form-group">
+				<label for="state">Business State</label>
+				<select class="form-control" id="state" name="state">
+					{% for state_choice in state %}
+						{% if state_choice.1 == chosen_state %}
+							<option selected>{{ state_choice.1 }}</option>
+						{% else %}
+							<option>{{ state_choice.1 }}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+			</div>
+
+			<button type="submit" class="btn">Submit</button>
 		</form>
 
 		{% if results %}

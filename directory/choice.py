@@ -29,6 +29,7 @@ BUSINESS_TYPE_CHOICES = ( #from https://developer.paypal.com/docs/classic/adapti
 	)
 
 BUSINESS_TYPE_DICT = {entry[0]:entry[1] for entry in BUSINESS_TYPE_CHOICES}
+REVERSE_BUSINESS_TYPE_DICT = {entry[1]:entry[0] for entry in BUSINESS_TYPE_CHOICES}
 
 STATE_CHOICES = (
 		('00','---'),
@@ -85,4 +86,4 @@ STATE_CHOICES = (
 	)
 
 STATE_DICT = {entry[0]:entry[1] for entry in STATE_CHOICES}
-
+REVERSE_STATE_DICT = {entry[1]:entry[0] for entry in STATE_CHOICES}
