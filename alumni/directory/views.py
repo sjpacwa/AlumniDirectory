@@ -16,8 +16,8 @@ def submit(request):
 	if request.method == "POST":
 		form = AlumniForm(request.POST)
 		form2 = BusinessForm(request.POST)
+
 		if form.is_valid() and form2.is_valid():
-			# Save both forms and refresh the page
 			new_alumni = form.save(commit=False)
 			new_alumni.author = request.user
 			new_alumni.published_date = timezone.now()
@@ -26,10 +26,11 @@ def submit(request):
 			new_business.author = request.user
 			new_business.published_date = timezone.now()
 			new_business.save()
-			return HttpResponseRedirect('/directory/submit/')
+			return HttpResponseRedirect('')
 	else:
 		form = AlumniForm()
 		form2 = BusinessForm()
+
 	return render(request, 'directory/submit.html', {'form': form, 'form2': form2})
 		
 

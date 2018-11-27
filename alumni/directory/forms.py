@@ -14,7 +14,7 @@ class BusinessForm(ModelForm):
 			'business_desc', 
 			'business_phone', 
 			'business_end_date', 
-			'business_website'
+			'business_website',
 		)
 
 		labels = {'business_name':'Business Name',
@@ -30,6 +30,10 @@ class BusinessForm(ModelForm):
 			'business_website':'Website URL'
 		}
 
+		exclude = ['business_approved',
+			'business_num_visit'
+		]
+
 
 class AlumniForm(ModelForm):
 	class Meta:
@@ -40,7 +44,7 @@ class AlumniForm(ModelForm):
 			'alumni_grad',
 			'alumni_school_id', 
 			'alumni_personal_email', 
-			'alumni_school_email'
+			'alumni_school_email',
 		)
 
 		labels = {'alumni_first_name':'First Name', 
@@ -51,4 +55,6 @@ class AlumniForm(ModelForm):
 			'alumni_personal_email':'Personal Email', 
 			'alumni_school_email':'SCU Email'
 		}
+
+		exclude = ['alumni_approved']
 
