@@ -66,6 +66,7 @@ def detail(request, business_id):
 		return HttpResponseNotFound('<h1>Page not found</h1>')
 	
 	business.business_num_visit = business.business_num_visit + 1
+	business.save()
 	
 	business.business_type = BUSINESS_TYPE_DICT[business.business_type]
 
@@ -136,7 +137,27 @@ def approve(request):
 
 @login_required
 def statistics(request):
-	return render(request, 'directory/statistics.html')
+	# Get number of businesses curently submitted.
+	all_business = Business.objects.all()
+	all_business_count= len(all_business)
+
+	# Get number of approved businesses.
+	approved_business = all_business.filter(business_approved=True)
+	approved_business_count = len(approved_business)
+
+	# Get total business visits.
+	business_visit_count = 0
+	businesses = []
+	for business in approved_business:
+		business_visit_count = business_visit_count + business.business_num_visit
+		businesses.append((business.business_name, business.business_num_visit))
+
+	businesses.sort(key=lambda business: business[1])
+
+	return render(request, 'directory/statistics.html', {"unapproved_business_count": (all_business_count - approved_business_count), 
+		"businesses": businesses[::-1], 
+		"approved_business_count": approved_business_count,
+		"business_visit_count": business_visit_count})
 
 @login_required
 def log_out(request):

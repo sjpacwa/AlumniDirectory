@@ -1,6 +1,6 @@
 from analytics.basemetric import BaseMetric
 from models import Business
-
+## none of this is actually used, wwe reimplemented it ourselves
 class TotalBusiness(BaseMetric):
     uid   = "totalbusiness"
     title = "Total Businesses"

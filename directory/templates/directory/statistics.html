@@ -42,9 +42,42 @@
 		</div>
 	</div>
 
-	<!-- Insert HTML here -->
-	<h1 style="margin-top: 15px; text-align: center;">Statistics</h1>
-	<h3 style="text-align: center">Later you can see site statistics here.</h3>
+	<div class=container>
+		<h1 style="margin-top: 15px; text-align: center;">Statistics</h1>
+		
+		<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+			<h3>Number of Approved Businesses: {{ approved_business_count }}</h3>
+		</div>
+
+		<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+			<h3>Number of Unapproved Businesses: {{ unapproved_business_count }}</h3>
+		</div>
+
+		<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+			<h3>Total Visits to Approved Businesses: {{ business_visit_count }}</h3>
+		</div>
+
+		<h1 style="margin-top: 15px; text-align: center;">Approved Businesses</h1>
+		<div class=card style="padding: 10px; margin-top: 10px; margin-bottom: 10px;">
+			<table class=table>
+				<thead>
+					<tr>
+						<th scope="col"><h3><strong>Business Name</strong></h3></th>
+						<th scope="col"><h3><strong>Number of Visits</strong></h3></th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for business in businesses %}			
+					<tr>
+						<td><h3>{{ business.0 }}</h3></td>
+						<td><h3>{{ business.1 }}</h3></td>
+					</tr>			
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
 
 	<!-- Bootstrap scripts -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
