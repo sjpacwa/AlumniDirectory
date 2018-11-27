@@ -1,3 +1,6 @@
+# Created by Django
+# Provides all framework management and starts the server.
+
 #!/usr/bin/env python
 import os
 import sys

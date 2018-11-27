@@ -1,3 +1,6 @@
+# urls.py
+# Contains all of the redirects for website URLs for the Django framework.
+
 from django.contrib import admin
 from django.urls import path
 

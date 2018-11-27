@@ -1,7 +1,10 @@
+# views.py
+# Contains all the rendering functions for each page and function in the website.
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, Http404, HttpResponseRedirect, HttpResponseNotFound
 from .models import Business, Alumni
-from .forms import BusinessForm, AlumniForm, BusinessSearchForm, BusinessEditForm
+from .forms import BusinessForm, AlumniForm, BusinessEditForm
 from django.core.mail import send_mail, send_mass_mail
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -13,9 +16,27 @@ from random import random
 #Heroku hosting URL: http://scu-directory.herokuapp.com
 
 def index(request):
+	'''
+	index
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Provides the render for the index page.
+	Returns:
+		A render of the templated file index.html.
+	'''
 	return render(request, 'directory/index.html')
 
 def submit(request):
+	'''
+	submit
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Handles POST and provides the needed information to render the submit page.
+	Returns:
+		A render of the templated file submit.html with all needed info.
+	'''
 	if request.method == "POST":
 		form = AlumniForm(request.POST)
 		form2 = BusinessForm(request.POST)
@@ -61,6 +82,16 @@ def submit(request):
 		
 
 def detail(request, business_id):
+	'''
+	detail
+	Params:
+		request: All the meta data of the request for this page.
+		business_id: The business ID for the specific business to display.
+	Description:
+		Looks up the business and provides needed info to render detail page.
+	Returns:
+		A render of the templated file detail.html with all needed info.
+	'''
 	business = get_object_or_404(Business, id=business_id)
 	if business.business_approved is False:
 		return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -69,11 +100,30 @@ def detail(request, business_id):
 	business.save()
 	
 	business.business_type = BUSINESS_TYPE_DICT[business.business_type]
+	alumni = Alumni.objects.get(pk=business.business_alumni_id)
 
-	return render(request, 'directory/detail.html', {'business': business})
+	return render(request, 'directory/detail.html', {'business': business, 'alumni':alumni})
 
 def search(request):
+	'''
+	search
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Handles search POST request and provides needed info to search page.
+	Returns:
+		A render of the templated file search.html with all needed info.
+	'''
 	def dict_fix(results):
+		'''
+		dict_fix
+		Params:
+			results: A list of all results for a certain search.
+		Description:
+			Converts the business type from code to human-readable format.
+		Returns:
+			The same list inputted with business type changed.
+		'''
 		for item in list(results):
 			item.business_type = BUSINESS_TYPE_DICT[item.business_type]
 		return results
@@ -107,6 +157,15 @@ def search(request):
 		return render(request, 'directory/search.html', {'results':results, 'types':list(BUSINESS_TYPE_CHOICES), 'state':STATE_CHOICES})
 
 def log_in(request):
+	'''
+	log_in
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Handles the login process and reroutes user if authenticated.
+	Returns:
+		A render of the templated file login.html or a redirect to approve if login successful.
+	'''
 	username = request.POST.get('username', '')
 	password = request.POST.get('password', '')
 	user = authenticate(request, username=username, password=password)
@@ -124,6 +183,15 @@ def log_in(request):
 
 @login_required
 def approve(request):
+	'''
+	approve
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Collects all of the businesses that have not beed approved or are edited. User must be logged in to access.
+	Returns:
+		A render of the templated file approve.html with all needed info.
+	'''
 	new_businesses = Business.objects.filter(business_approved=False)
 	edit_businesses = Business.objects.filter(business_edit_approved=False)
 	for item in list(new_businesses):
@@ -137,6 +205,15 @@ def approve(request):
 
 @login_required
 def statistics(request):
+	'''
+	statistics
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Collects all website statistics and prepares it to be templated. User must be logged in to access.
+	Returns:
+		A render of the templated file statistics.html with all needed info.
+	'''
 	# Get number of businesses curently submitted.
 	all_business = Business.objects.all()
 	all_business_count= len(all_business)
@@ -150,7 +227,12 @@ def statistics(request):
 	businesses = []
 	for business in approved_business:
 		business_visit_count = business_visit_count + business.business_num_visit
-		businesses.append((business.business_name, business.business_num_visit))
+		alumni = Alumni.objects.get(pk=business.business_alumni_id)
+		businesses.append((business.business_name, 
+			business.business_num_visit, 
+			alumni.alumni_first_name,
+			alumni.alumni_last_name,
+			alumni.alumni_personal_email))
 
 	businesses.sort(key=lambda business: business[1])
 
@@ -161,11 +243,29 @@ def statistics(request):
 
 @login_required
 def log_out(request):
+	'''
+	log_out
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Logs the current user out. Must be logged in to access.
+	Returns:
+		A redirect to the login page.
+	'''
 	logout(request)
 	return HttpResponseRedirect('/office/login/')
 
 @login_required
 def approve_deny_new(request):
+	'''
+	approve_deny_new
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Handles the approval of all business postings that are new and emails the user with results. Must be logged in to access.
+	Returns:
+		A redirect to the approval page.
+	'''
 	approved_messages = ('[noreply] Your submission has been approved', 
 		'Congratulations, your submission is now viewable in the SCU Alumni Directory.\nThis is an unmonitored email address and any responses will be ignored.', 
 		'scudirectory@gmail.com', 
@@ -206,6 +306,15 @@ def approve_deny_new(request):
 
 @login_required
 def approve_deny_edit(request):
+	'''
+	approve_deny_edit
+	Params:
+		request: All the meta data of the request for this page.
+	Description:
+		Handles the approval of all business postings that have been edited and emails the user with results. Must be logged in to access.
+	Returns:
+		A redirect to the approval page.
+	'''
 	approved_messages = ('[noreply] Your edit has been approved', 
 		'Congratulations, your edit is now viewable in the SCU Alumni Directory.\nThis is an unmonitored email address and any responses will be ignored.', 
 		'scudirectory@gmail.com', 
@@ -254,6 +363,16 @@ def approve_deny_edit(request):
 	return HttpResponseRedirect('/office/approve/')
 
 def edit(request, business_id):
+	'''
+	edit
+	Params:
+		request: All the meta data of the request for this page.
+		business_id: The ID of the business that should be edited.
+	Description:
+		Handles the POST for edited businesses and ensures the proper authentication code was inserted.
+	Returns:
+		A render of the templated file edit.html with all needed info.
+	'''
 	# Lookup the business in the database.
 	business = get_object_or_404(Business, id=business_id)
 	if business.business_approved is False:
@@ -319,9 +438,18 @@ def edit(request, business_id):
 		
 		return render(request, 'directory/edit.html', {'business': business, 'form': form, 'submitted':submitted})
 
-
-
+@login_required
 def admin_delete(request, business_id):
+	'''
+	admin_delete
+	Params:
+		request: All the meta data of the request for this page.
+		business_id: The ID of the business that should be deleted.
+	Description:
+		Deletes the business that is given from the database. Must be logged in to access.
+	Returns:
+		A redirect to the search page.
+	'''
 	if request.POST.get('csrfmiddlewaretoken') is None:
 		# Was not accessed through the right form.
 		return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -339,6 +467,16 @@ def admin_delete(request, business_id):
 		return HttpResponseRedirect('/search/')
 
 def delete(request, business_id):
+	'''
+	delete
+	Params:
+		request: All the meta data of the request for this page.
+		business_id: The ID of the business that should be deleted.
+	Description:
+		Checks that the proper verification code has been entered and then deletes the business from the database.
+	Returns:
+		A render of the templated page delete.html with all needed info.
+	'''
 	business = Business.objects.get(id=business_id)
 	alumni = Alumni.objects.get(id=business.business_alumni_id)
 	deleted = False
